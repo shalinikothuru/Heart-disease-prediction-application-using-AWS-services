@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Heart Disease Prediction</title>
+</head>
+<body>
+    <h1>Heart Disease Prediction Form</h1>
+    <form id="predictionForm">
+        <label for="oldpeak">Oldpeak (0-10):</label>
+        <input type="number" id="oldpeak" name="oldpeak" placeholder="0-10" required><br><br>
+        
+        <label for="exang">Exang (0/1):</label>
+        <input type="number" id="exang" name="exang" placeholder="0 or 1" required><br><br>
+        
+        <label for="cp">CP (0-3):</label>
+        <input type="number" id="cp" name="cp" placeholder="0-3" required><br><br>
+        
+        <label for="thalach">Thalach (50-200):</label>
+        <input type="number" id="thalach" name="thalach" placeholder="50-200" required><br><br>
+        
+        <label for="ca">CA (0-4):</label>
+        <input type="number" id="ca" name="ca" placeholder="0-4" required><br><br>
+        
+        <button type="submit">Predict</button>
+    </form>
+    <div id="predictionResult"></div>
+
+    <script>
+        document.getElementById('predictionForm').onsubmit = function(event) {
+            event.preventDefault();
+            var formData = {
+                oldpeak: document.getElementById('oldpeak').value,
+                exang: document.getElementById('exang').value,
+                cp: document.getElementById('cp').value,
+                thalach: document.getElementById('thalach').value,
+                ca: document.getElementById('ca').value
+            };
+
+  
+	    fetch('https://zlchoamgsi.execute-api.us-east-2.amazonaws.com/testing', {
+    		method: 'POST',
+    		body: JSON.stringify(formData),
+    		headers: {
+        		'Content-Type': 'application/json'
+    		}
+		})
+	    .then(response => response.json())
+	    .then(data => document.getElementById('predictionResult').innerText = 'Prediction: ' + data.prediction)
+	    .catch(error => console.error('Error:', error));
+        };
+    </script>
+</body>
+</html>
